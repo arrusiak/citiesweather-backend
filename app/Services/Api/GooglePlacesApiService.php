@@ -2,15 +2,20 @@
 
 namespace App\Services\Api;
 
+use App\Interface\GooglePlacesApiInterface;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class GooglePlacesApiService
+class GooglePlacesApiService implements GooglePlacesApiInterface
 {
-    public function getLocation(string $input)
+    /**
+     * @param string $input
+     * @return array
+     */
+    public function getLocation(string $input): array
     {
         Log::info('Start request to google places api', ['input' => $input]);
         try {
@@ -23,6 +28,7 @@ class GooglePlacesApiService
             Log::info('Finish request to openWeatherApi', ['input' => $input, 'response' => $response]);
 
             return $response;
+
         } catch (Exception $e) {
             throw new BadRequestException();
         }
@@ -36,12 +42,12 @@ class GooglePlacesApiService
         return Http::baseUrl(config('googleplacesapi.base_url'));
     }
 
-    public function formatPredictions(array $predictions)
+    public function formatPredictions(array $predictions): array
     {
         return array_reduce($predictions, function ($result, $item) {
             $result[] = [
                 "description" => $item['description'],
-                "main_text" => $item['structured_formatting']['main_text'],
+                "main_text" => $item['structured_formatting']['main_text'], //todo
                 "secondary_text" => $item['structured_formatting']['secondary_text'],
             ];
 
