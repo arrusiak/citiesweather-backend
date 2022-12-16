@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\WeatherController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,7 @@ Route::get('/{city}',[WeatherController::class, 'getWeather']);
 Route::post('/search',[SearchController::class, 'search']);
 
 Route::post('/contact-us',[ContactUsController::class, 'store']);
+
+Route::post('/upload',[UploadController::class, 'upload']);
 
 
